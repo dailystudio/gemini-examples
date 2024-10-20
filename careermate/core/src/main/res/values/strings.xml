@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name_release">Career Mate</string>
+    <string name="app_name_debug">Career Mate (Debug)</string>
+
+    <string name="hello">Hello Career Mate!</string>
+
+</resources>
