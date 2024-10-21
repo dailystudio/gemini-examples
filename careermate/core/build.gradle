@@ -20,6 +20,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField "String", "GEMINI_API_KEY", "\"${project.GEMINI_API_KEY}\""
     }
 
     buildTypes {
@@ -70,7 +72,13 @@ dependencies {
     /* Image & Animation */
     api("io.coil-kt:coil:${project.ext.coilVersion}")
 
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    /* Gemini Google AI Client SDK */
+    api("com.google.ai.client.generativeai:generativeai:0.9.0")
+
+    /* Vertex AI in Firebase */
+    api("com.google.firebase:firebase-vertexai:16.0.0-beta06")
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 }
