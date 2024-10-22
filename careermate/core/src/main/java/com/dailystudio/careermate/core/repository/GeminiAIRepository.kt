@@ -11,7 +11,7 @@ import com.google.ai.client.generativeai.type.generationConfig
 import kotlinx.coroutines.CoroutineDispatcher
 import java.io.InputStream
 
-class GeminiRepository(
+class GeminiAIRepository(
     dispatcher: CoroutineDispatcher
 ): BaseAIRepository(dispatcher) {
 
