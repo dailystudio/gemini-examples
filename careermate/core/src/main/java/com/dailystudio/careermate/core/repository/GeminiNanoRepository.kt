@@ -17,7 +17,7 @@ class GeminiNanoRepository(
     dispatcher: CoroutineDispatcher
 ): BaseAIRepository(context, dispatcher) {
 
-    val model = GenerativeModel(
+    private val model = GenerativeModel(
         generationConfig {
             this.context = context
             temperature = 0.2f

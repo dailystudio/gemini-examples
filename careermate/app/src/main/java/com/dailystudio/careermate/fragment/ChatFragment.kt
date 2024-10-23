@@ -67,7 +67,7 @@ class ChatFragment: AbsPermissionsFragment() {
 
         sendButton = view.findViewById(R.id.send)
         sendButton?.setOnClickListener {
-            resumeViewModel.generate(userInput?.text.toString())
+            resumeViewModel.analyzeResume(userInput?.text.toString())
         }
 
         pickButton = view.findViewById(R.id.pick)
@@ -84,11 +84,10 @@ class ChatFragment: AbsPermissionsFragment() {
                 Logger.debug("[FILE] selected uri: $uri")
 
                 uri?.let {
-                    val mineType = requireContext().contentResolver.getType(uri)
+                    val mineType = requireContext().contentResolver.getType(uri) ?: "*/*"
                     Logger.debug("[FILE] mineType: $mineType")
 
-                    resumeViewModel.generate(
-                        userInput?.text.toString(),
+                    resumeViewModel.analyzeResumeDocument(
                         it.toString(),
                         mineType
                     )

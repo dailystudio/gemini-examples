@@ -4,4 +4,16 @@
 
     <string name="hello">Hello Career Mate!</string>
 
+    <string name="prompt_analyze_resume_text">
+        According to "%1$s", summarize the personal information.
+        The personal information is described in this JSON schema:
+        "%2$s"
+    </string>
+
+    <string name="prompt_analyze_resume_document">
+        According to the content in the document, summarize the personal information.
+        The personal information is described in this JSON schema:
+        "%1$s"
+    </string>
+
 </resources>

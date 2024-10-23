@@ -6,6 +6,8 @@ import android.net.Uri
 import com.dailystudio.careermate.core.BuildConfig
 import com.dailystudio.devbricksx.development.Logger
 import com.google.ai.client.generativeai.GenerativeModel
+import com.google.ai.client.generativeai.type.FunctionType
+import com.google.ai.client.generativeai.type.Schema
 import com.google.ai.client.generativeai.type.content
 import com.google.ai.client.generativeai.type.generationConfig
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,6 +22,7 @@ class GeminiAIRepository(
         modelName = "gemini-1.5-flash-001",
         apiKey = BuildConfig.GEMINI_API_KEY,
         generationConfig = generationConfig {
+            responseMimeType = "application/json"
             temperature = 0.15f
             topK = 32
             topP = 1f
