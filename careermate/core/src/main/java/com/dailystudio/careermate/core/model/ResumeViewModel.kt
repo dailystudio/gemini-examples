@@ -28,8 +28,8 @@ class ResumeViewModel(application: Application): AndroidViewModel(application) {
 
     private val repo: BaseAIRepository = when (ENGINE) {
         AIEngine.GEMINI -> GeminiAIRepository(application, Dispatchers.IO)
-        AIEngine.GEMINI_NANO -> GeminiNanoRepository(application, Dispatchers.IO)
         AIEngine.VERTEX -> VertexAIRepository(application, Dispatchers.IO)
+        AIEngine.GEMINI_NANO -> GeminiNanoRepository(application, Dispatchers.IO)
         AIEngine.GEMMA -> GemmaAIRepository(application, Dispatchers.IO)
     }
 

@@ -2,8 +2,36 @@ package com.dailystudio.careermate.core.repository
 
 import android.content.Context
 import com.dailystudio.careermate.core.R
+import com.dailystudio.devbricksx.development.Logger
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
+
+
+class InferenceStats {
+
+    var lastInferenceTime: Long = 0
+    var countOfInferences: Long = 0
+    var avgInferenceTime: Long = 0
+
+    private var startTime: Long = 0
+
+    fun markStart() {
+        startTime = System.currentTimeMillis()
+    }
+
+    fun markEnd() {
+        lastInferenceTime = System.currentTimeMillis() - startTime
+        avgInferenceTime =
+            (avgInferenceTime * countOfInferences + lastInferenceTime) / (countOfInferences + 1)
+
+        countOfInferences++
+
+        Logger.debug("[AI STATS]: inference time: $lastInferenceTime, avg: $avgInferenceTime")
+    }
+}
 
 abstract class BaseAIRepository(
     protected val context: Context,
@@ -74,6 +102,9 @@ abstract class BaseAIRepository(
         """
     }
 
+    private val _stats: MutableStateFlow<InferenceStats> = MutableStateFlow(InferenceStats())
+    val stats: StateFlow<InferenceStats> = _stats.asStateFlow()
+
     suspend fun analyzeResumeFromText(textOfResume: String): String? {
         return withContext(dispatcher) {
             val templateOfPrompt = context.getString(
@@ -94,7 +125,7 @@ abstract class BaseAIRepository(
                 JSON_SCHEMA_RESUME
             )
 
-            generateContent(
+            generate(
                 templateOfPrompt,
                 fileUri,
                 mimeType
@@ -108,7 +139,11 @@ abstract class BaseAIRepository(
         mimeType: String? = null
     ): String? {
         return withContext(dispatcher) {
-            generateContent(prompt, fileUri, mimeType)
+            _stats.value.markStart()
+            val ret =  generateContent(prompt, fileUri, mimeType)
+            _stats.value.markEnd()
+
+            ret
         }
     }
 
