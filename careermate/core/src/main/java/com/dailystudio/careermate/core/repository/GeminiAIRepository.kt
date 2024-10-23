@@ -1,9 +1,9 @@
 package com.dailystudio.careermate.core.repository
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
 import com.dailystudio.careermate.core.BuildConfig
-import com.dailystudio.devbricksx.GlobalContextWrapper
 import com.dailystudio.devbricksx.development.Logger
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.content
@@ -12,8 +12,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import java.io.InputStream
 
 class GeminiAIRepository(
+    context: Context,
     dispatcher: CoroutineDispatcher
-): BaseAIRepository(dispatcher) {
+): BaseAIRepository(context, dispatcher) {
 
     private val model = GenerativeModel(
         modelName = "gemini-1.5-flash-001",
@@ -41,7 +42,7 @@ class GeminiAIRepository(
                         var stream: InputStream? = null
                         try {
                             stream =
-                                GlobalContextWrapper.context?.contentResolver?.openInputStream(
+                                context.contentResolver.openInputStream(
                                     Uri.parse(fileUri)
                                 )
 

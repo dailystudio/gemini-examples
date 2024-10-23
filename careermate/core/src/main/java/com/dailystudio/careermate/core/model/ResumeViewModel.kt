@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dailystudio.careermate.core.repository.BaseAIRepository
 import com.dailystudio.careermate.core.repository.GeminiAIRepository
+import com.dailystudio.careermate.core.repository.GeminiNanoRepository
 import com.dailystudio.careermate.core.repository.GemmaAIRepository
 import com.dailystudio.careermate.core.repository.VertexAIRepository
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 class ResumeViewModel(application: Application): AndroidViewModel(application) {
 
     private val repo: BaseAIRepository =
-        GemmaAIRepository(Dispatchers.IO)
+        GeminiNanoRepository(Dispatchers.IO)
+//        GemmaAIRepository(Dispatchers.IO)
 //        VertexAIRepository(Dispatchers.IO)
 //        GeminiAIRepository(Dispatchers.IO)
 
@@ -34,6 +36,12 @@ class ResumeViewModel(application: Application): AndroidViewModel(application) {
                 mineType
             )
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+
+        repo.close()
     }
 
 }

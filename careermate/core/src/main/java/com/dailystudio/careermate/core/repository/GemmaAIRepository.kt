@@ -1,20 +1,16 @@
 package com.dailystudio.careermate.core.repository
 
-import android.net.Uri
-import com.dailystudio.devbricksx.GlobalContextWrapper
+import android.content.Context
+import com.dailystudio.careermate.core.utils.PDFUtils
 import com.dailystudio.devbricksx.development.Logger
 import com.google.mediapipe.tasks.genai.llminference.LlmInference
-import com.tom_roush.pdfbox.android.PDFBoxResourceLoader
-import com.tom_roush.pdfbox.pdmodel.PDDocument
-import com.tom_roush.pdfbox.text.PDFTextStripper
 import kotlinx.coroutines.CoroutineDispatcher
 import java.io.File
-import java.io.IOException
-import java.io.InputStream
 
 class GemmaAIRepository(
+    context: Context,
     dispatcher: CoroutineDispatcher
-): BaseAIRepository(dispatcher) {
+): BaseAIRepository(context, dispatcher) {
 
     companion object {
         // NB: Make sure the filename is *unique* per model you use!
@@ -40,9 +36,7 @@ class GemmaAIRepository(
             }
             .build()
 
-        llmInference = LlmInference.createFromOptions(GlobalContextWrapper.context, options)
-
-        PDFBoxResourceLoader.init(GlobalContextWrapper.context)
+        llmInference = LlmInference.createFromOptions(context, options)
     }
 
     override suspend fun generateContent(
@@ -52,7 +46,7 @@ class GemmaAIRepository(
     ): String? {
         var composedPrompt = if (fileUri != null && !mimeType.isNullOrBlank()) {
             if (mimeType.contains("pdf")) {
-                extractTextFromPdf(fileUri)
+                PDFUtils.extractTextFromPdf(fileUri)
             } else {
                 ""
             }
@@ -66,28 +60,5 @@ class GemmaAIRepository(
         return llmInference.generateResponse(composedPrompt)
     }
 
-    private fun extractTextFromPdf(pdfPath: String): String? {
-        // Using the `PdfDocument` class
-        var stream: InputStream? = null
-        var pdfDocument: PDDocument? = null
 
-        return try {
-            stream =
-                GlobalContextWrapper.context?.contentResolver?.openInputStream(
-                    Uri.parse(pdfPath)
-                )
-
-            stream?.let {
-                pdfDocument = PDDocument.load(it)
-                val pdfStripper = PDFTextStripper()
-
-                pdfStripper.getText(pdfDocument)
-            }
-        } catch (e: IOException) {
-            Logger.error("failed to extract text from pdf [${pdfPath}]: $e")
-            null
-        } finally {
-            stream?.close()
-        }
-    }
 }

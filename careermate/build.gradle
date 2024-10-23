@@ -37,7 +37,7 @@ ext {
     COMPILE_SDK = 34 // temporarily for avoiding xml completion issue
     BUILD_TOOLS = '34.0.0'
 
-    MINI_SDK_VERSION = 24
+    MINI_SDK_VERSION = 31
     TARGET_SDK_VERSION = 34
 
     VERSION_NAME = version()

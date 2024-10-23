@@ -1,9 +1,11 @@
 package com.dailystudio.careermate.core.repository
 
+import android.content.Context
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 abstract class BaseAIRepository(
+    protected val context: Context,
     private val dispatcher: CoroutineDispatcher
 ) {
 
@@ -23,4 +25,5 @@ abstract class BaseAIRepository(
         mimeType: String? = null
     ): String?
 
+    open fun close() {}
 }
